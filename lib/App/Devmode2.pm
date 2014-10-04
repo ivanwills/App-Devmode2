@@ -57,6 +57,7 @@ sub run {
     }
 
     # do stuff here
+    my $session = shift @ARGV or die "No session name passed!";
 
 
     return;
@@ -69,21 +70,20 @@ __END__
 
 =head1 NAME
 
-App::Devmode2 - <One-line description of module's purpose>
+App::Devmode2 - A tmux session loading tool
 
 =head1 VERSION
 
 This documentation refers to App::Devmode2 version HASH(0x1322de0)
 
-
 =head1 SYNOPSIS
 
-   use App::Devmode2;
+    devmode2 [options] <session>
 
-   # Brief but working code example(s) here showing the most common usage(s)
-   # This section will be as far as many users bother reading, so make it as
-   # educational and exemplary as possible.
-
+  OPTIONS:
+   <session>    A tmux session name to create or connect to
+   -l --layout[=]str
+                A layout to load if creating a new session
 
 =head1 DESCRIPTION
 
