@@ -4,4 +4,4 @@ use strict;
 use warnings;
 use App::Devmode2;
 
-App::Devmode2->run;
+exit App::Devmode2->run;

@@ -8,32 +8,59 @@ package App::Devmode2;
 
 use strict;
 use warnings;
-use version;
 use Carp;
 use Scalar::Util;
 use List::Util;
-#use List::MoreUtils;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
+use Getopt::Long;
+use Pod::Usage;
+use FindBin qw/$Bin/;
+use Path::Class;
 use base qw/Exporter/;
 
-
-our $VERSION     = version->new('HASH(0x1322de0)');
+our $VERSION     = 0.1;
 our @EXPORT_OK   = qw//;
 our %EXPORT_TAGS = ();
-#our @EXPORT      = qw//;
+my ($name)   = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
 
-sub new {
-	my $caller = shift;
-	my $class  = ref $caller ? ref $caller : $caller;
-	my %param  = @_;
-	my $self   = \%param;
+my %option = (
+    out     => undef,
+    verbose => 0,
+    man     => 0,
+    help    => 0,
+    VERSION => 0,
+);
 
-	bless $self, $class;
+sub run {
+    Getopt::Long::Configure('bundling');
+    GetOptions(
+        \%option,
+        'out|o=s',
+        'verbose|v+',
+        'man',
+        'help',
+        'VERSION!',
+    ) or pod2usage(2);
 
-	return $self;
+    if ( $option{'VERSION'} ) {
+        print "$name Version = $VERSION\n";
+        return 1;
+    }
+    elsif ( $option{'man'} ) {
+        pod2usage( -verbose => 2 );
+        return 1;
+    }
+    elsif ( $option{'help'} ) {
+        pod2usage( -verbose => 1 );
+        return 1;
+    }
+
+    # do stuff here
+
+
+    return;
 }
-
 
 
 1;
