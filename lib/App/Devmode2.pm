@@ -33,10 +33,11 @@ my %option = (
 );
 
 sub run {
+    my ($self) = @_;
     Getopt::Long::Configure('bundling');
     GetOptions(
         \%option,
-        'out|o=s',
+        'layout|l=s',
         'verbose|v+',
         'man',
         'help',
@@ -57,12 +58,44 @@ sub run {
     }
 
     # do stuff here
-    my $session = shift @ARGV or die "No session name passed!";
+    my $session  = shift @ARGV // die "No session name passed!";
+    my @sessions = $self->sessions();
 
+    if ( grep { $_ eq $session } @sessions ) {
+        # connect to session
+        warn "found\n";
+        return 1;
+    }
 
-    return;
+    my @actions = ('-u2', 'new-session', '-s', $session);
+    if ($option{layout}) {
+        push @actions, ';', "source-file", "$ENV{HOME}/.tmux-layout/$option{layout}";
+    }
+
+    $self->_exec('tmux', @actions);
+    warn "Not found\n";
+
+    return 1;
 }
 
+sub sessions {
+    my $self = shift;
+    return map {
+            /^(.+) : \s+ \d+ \s+ window/xms;
+            $1;
+        }
+        $self->_qx('tmux ls');
+}
+
+sub _qx {
+    my $self = shift;
+    return qx/@_/;
+}
+
+sub _exec {
+    my $self = shift;
+    print join ' ', @_, "\n";
+}
 
 1;
 
