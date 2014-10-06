@@ -8,12 +8,15 @@ my $builder = Module::Build->new(
     dist_author       => 'Ivan Wills <ivan.wills@gmail.com>',
     dist_version_from => 'lib/App/Devmode2.pm',
     requires          => {
-        'perl'        => 5.010,
+        'perl'        => 5.008,
         'Path::Class' => 0,
     },
     build_requires => {
         'Test::More'       => 0,
         'Test::NoWarnings' => 0,
+    },
+    recommends => {
+        'Term::Title' => 0,
     },
     add_to_cleanup     => [ 'App-Devmode2-*' ],
     create_makefile_pl => 'traditional',

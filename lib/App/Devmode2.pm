@@ -58,7 +58,7 @@ sub run {
     }
 
     # do stuff here
-    my $session  = shift @ARGV // die "No session name passed!";
+    my $session  = @ARGV ? shift @ARGV : die "No session name passed!";
     my @sessions = $self->sessions();
 
     # set the terminal title to the session name
