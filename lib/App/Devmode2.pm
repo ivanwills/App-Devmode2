@@ -72,7 +72,7 @@ sub run {
 
     my @actions = ('-u2', 'new-session', '-s', $session, ';', 'source-file', "$ENV{HOME}/.tmux.conf");
     if ($option{layout}) {
-        push @actions, ';', "source-file", "$ENV{HOME}/.tmux-layout/$option{layout}";
+        push @actions, ';', "source-file", "$ENV{HOME}/.tmux/layout/$option{layout}";
     }
 
     $self->_exec('tmux', @actions);
