@@ -61,13 +61,16 @@ sub run {
     my $session  = shift @ARGV // die "No session name passed!";
     my @sessions = $self->sessions();
 
+    # set the terminal title to the session name
+    $self->set_title($session);
+
     if ( grep { $_ eq $session } @sessions ) {
         # connect to session
         warn "found\n";
         return 1;
     }
 
-    my @actions = ('-u2', 'new-session', '-s', $session);
+    my @actions = ('-u2', 'new-session', '-s', $session, ';', 'source-file', "$ENV{HOME}/.tmux.conf");
     if ($option{layout}) {
         push @actions, ';', "source-file", "$ENV{HOME}/.tmux-layout/$option{layout}";
     }
@@ -76,6 +79,13 @@ sub run {
     warn "Not found\n";
 
     return 1;
+}
+
+sub set_title {
+    my ($self, $session) = @_;
+    eval { require Term::Title; } or return;
+    Term::Title::set_titlebar($session);
+    return;
 }
 
 sub sessions {
@@ -94,7 +104,9 @@ sub _qx {
 
 sub _exec {
     my $self = shift;
-    print join ' ', @_, "\n";
+    print join ' ', @_, "\n" if $option{verbose};
+    exec @_ if !$option{test};
+    return;
 }
 
 1;
