@@ -17,20 +17,12 @@ use Getopt::Long;
 use Pod::Usage;
 use FindBin qw/$Bin/;
 use Path::Class;
+use YAML qw/LoadFile DumpFile/;
 use base qw/Exporter/;
 
-our $VERSION     = 0.1;
-our @EXPORT_OK   = qw//;
-our %EXPORT_TAGS = ();
-my ($name)   = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
-
-my %option = (
-    out     => undef,
-    verbose => 0,
-    man     => 0,
-    help    => 0,
-    VERSION => 0,
-);
+our $VERSION = 0.1;
+our ($name)  = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
+our %option;
 
 sub run {
     my ($self) = @_;
@@ -38,6 +30,8 @@ sub run {
     GetOptions(
         \%option,
         'layout|l=s',
+        'chdir|cd|c=s',
+        'save|s',
         'verbose|v+',
         'man',
         'help',
@@ -57,7 +51,7 @@ sub run {
         return 1;
     }
 
-    # do stuff here
+    # get the session name
     my $session  = @ARGV ? shift @ARGV : die "No session name passed!";
     my @sessions = $self->sessions();
 
@@ -69,6 +63,9 @@ sub run {
         warn "found\n";
         return 1;
     }
+
+    # creating a new session should do some extra work
+    $self->process_config($session, \%option);
 
     my @actions = ('-u2', 'new-session', '-s', $session, ';', 'source-file', "$ENV{HOME}/.tmux.conf");
     if ($option{layout}) {
@@ -97,6 +94,35 @@ sub sessions {
         $self->_qx('tmux ls');
 }
 
+sub process_config {
+    my ($self, $session, $option) = @_;
+    my $config_file = file "$ENV{HOME}/.tmux/devmode2/$session";
+
+    # return if no config and not saving
+    return if !-f $config_file && !$option->{save};
+
+    if ( -f $config_file ) {
+        my ($config) = LoadFile("$config_file");
+        for my $key (keys %{ $config }) {
+            $option->{$key} = $config->{$key} if !exists $option->{$key};
+        }
+    }
+
+    # save the config if requested to
+    if ($option->{save}) {
+        # create the path if missing
+        $config_file->parent->mkpath();
+
+        # don't save saving
+        delete $option->{save};
+
+        # save the config to YAML
+        DumpFile("$config_file", $option);
+    }
+
+    return;
+}
+
 sub _qx {
     my $self = shift;
     return qx/@_/;
@@ -119,7 +145,7 @@ App::Devmode2 - A tmux session loading tool
 
 =head1 VERSION
 
-This documentation refers to App::Devmode2 version HASH(0x1322de0)
+This documentation refers to App::Devmode2 version 0.1
 
 =head1 SYNOPSIS
 
@@ -129,6 +155,7 @@ This documentation refers to App::Devmode2 version HASH(0x1322de0)
    <session>    A tmux session name to create or connect to
    -l --layout[=]str
                 A layout to load if creating a new session
+   -s --save    Save the current config to the session file
 
 =head1 DESCRIPTION
 
@@ -149,6 +176,11 @@ to work).
 =head2 C<sessions ()>
 
 Gets a list of current tmux sessions.
+
+=head2 C<process_config ($session, $option)>
+
+Reads any config for C<$session> (from ~/.tmux/devmode2/$session) and
+optionally saves that config.
 
 =head1 DIAGNOSTICS
 
