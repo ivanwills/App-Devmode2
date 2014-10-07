@@ -67,6 +67,10 @@ sub run {
     # creating a new session should do some extra work
     $self->process_config($session, \%option);
 
+    if ($option{chdir}) {
+        chdir $option{chdir};
+    }
+
     my @actions = ('-u2', 'new-session', '-s', $session, ';', 'source-file', "$ENV{HOME}/.tmux.conf");
     if ($option{layout}) {
         push @actions, ';', "source-file", "$ENV{HOME}/.tmux/layout/$option{layout}";
@@ -156,6 +160,8 @@ This documentation refers to App::Devmode2 version 0.1
    -l --layout[=]str
                 A layout to load if creating a new session
    -s --save    Save the current config to the session file
+      --cd[=]dir
+                Change to dir before running tmux
 
 =head1 DESCRIPTION
 
