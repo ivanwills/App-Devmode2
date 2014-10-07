@@ -22,6 +22,9 @@ use base qw/Exporter/;
 
 our $VERSION = 0.1;
 our ($name)  = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
+our $tmux_conf    = file "$ENV{HOME}", '.tmux.conf';
+our $tmux_layout  = dir "$ENV{HOME}", '.tmux', 'layout';
+our $tmux_devmode = dir "$ENV{HOME}", '.tmux', 'devmode2';
 our %option;
 
 sub run {
@@ -71,9 +74,9 @@ sub run {
         chdir $option{chdir};
     }
 
-    my @actions = ('-u2', 'new-session', '-s', $session, ';', 'source-file', "$ENV{HOME}/.tmux.conf");
+    my @actions = ('-u2', 'new-session', '-s', $session, ';', 'source-file', $tmux_conf);
     if ($option{layout}) {
-        push @actions, ';', "source-file", "$ENV{HOME}/.tmux/layout/$option{layout}";
+        push @actions, ';', "source-file", $tmux_layour->file($option{layout});
     }
 
     $self->_exec('tmux', @actions);
@@ -100,7 +103,7 @@ sub sessions {
 
 sub process_config {
     my ($self, $session, $option) = @_;
-    my $config_file = file "$ENV{HOME}/.tmux/devmode2/$session";
+    my $config_file = $tmux_devmode->file($session);
 
     # return if no config and not saving
     return if !-f $config_file && !$option->{save};
