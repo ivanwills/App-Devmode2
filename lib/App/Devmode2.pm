@@ -76,7 +76,7 @@ sub run {
 
     my @actions = ('-u2', 'new-session', '-s', $session, ';', 'source-file', $tmux_conf);
     if ($option{layout}) {
-        push @actions, ';', "source-file", $tmux_layour->file($option{layout});
+        push @actions, ';', "source-file", $tmux_layout->file($option{layout});
     }
 
     $self->_exec('tmux', @actions);
