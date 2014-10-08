@@ -26,6 +26,7 @@ our $tmux_conf    = file "$ENV{HOME}", '.tmux.conf';
 our $tmux_layout  = dir "$ENV{HOME}", '.tmux', 'layout';
 our $tmux_devmode = dir "$ENV{HOME}", '.tmux', 'devmode2';
 our %option;
+our %p2u_extra;
 
 sub run {
     my ($self) = @_;
@@ -39,18 +40,30 @@ sub run {
         'man',
         'help',
         'VERSION!',
-    ) or pod2usage(2);
+    ) or Pod::Usage::pod2usage(
+        -verbose => 1,
+        -input   => $self,
+        %p2u_extra,
+    ) and return 1;
 
     if ( $option{'VERSION'} ) {
         print "$name Version = $VERSION\n";
-        return 1;
+        return 0;
     }
     elsif ( $option{'man'} ) {
-        pod2usage( -verbose => 2 );
-        return 1;
+        Pod::Usage::pod2usage(
+            -verbose => 2,
+            -input   => $self,
+            %p2u_extra,
+        );
+        return 2;
     }
     elsif ( $option{'help'} ) {
-        pod2usage( -verbose => 1 );
+        Pod::Usage::pod2usage(
+            -verbose => 1,
+            -input   => __FILE__,
+            %p2u_extra,
+        );
         return 1;
     }
 
