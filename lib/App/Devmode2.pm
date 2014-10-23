@@ -182,8 +182,10 @@ This documentation refers to App::Devmode2 version 0.1
    -l --layout[=]str
                 A layout to load if creating a new session
    -s --save    Save the current config to the session file
-      --cd[=]dir
+   -c --cd[=]dir
                 Change to dir before running tmux
+   -C --curdir  When used with --save saves the current director as the
+                directory to change to when next loaded.
 
 =head1 DESCRIPTION
 
