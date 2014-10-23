@@ -77,7 +77,7 @@ sub run {
 
     if ( grep { $_ eq $session } @sessions ) {
         # connect to session
-        warn "found\n";
+        $self->_exec('tmux', 'attach', '-t', $session);
         return 1;
     }
 
