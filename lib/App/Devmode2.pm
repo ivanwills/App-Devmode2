@@ -130,7 +130,7 @@ sub process_config {
     }
 
     # save the config if requested to
-    if ($option->{save}) {
+    if ($option->{save} || $option{curdir}) {
         # create the path if missing
         $config_file->parent->mkpath();
 
@@ -184,8 +184,8 @@ This documentation refers to App::Devmode2 version 0.1
    -s --save    Save the current config to the session file
    -c --cd[=]dir
                 Change to dir before running tmux
-   -C --curdir  When used with --save saves the current director as the
-                directory to change to when next loaded.
+   -C --curdir  Saves the current director as the directory to change to
+                when next loaded. (implies --save)
 
 =head1 DESCRIPTION
 
