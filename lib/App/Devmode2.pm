@@ -81,6 +81,10 @@ sub run {
         return 1;
     }
 
+    if ($option{curdir}) {
+        $option{save} = 1;
+    }
+
     # creating a new session should do some extra work
     $self->process_config($session, \%option);
 
@@ -130,7 +134,7 @@ sub process_config {
     }
 
     # save the config if requested to
-    if ($option->{save} || $option{curdir}) {
+    if ($option->{save}) {
         # create the path if missing
         $config_file->parent->mkpath();
 
