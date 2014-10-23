@@ -35,6 +35,7 @@ sub run {
         \%option,
         'layout|l=s',
         'chdir|cd|c=s',
+        'curdir|C',
         'save|s',
         'verbose|v+',
         'man',
@@ -135,6 +136,11 @@ sub process_config {
 
         # don't save saving
         delete $option->{save};
+
+        if ($option{curdir}) {
+            delete $option->{curdir};
+            $option->{chdir} = dir('.')->absolute . '';
+        }
 
         # save the config to YAML
         DumpFile("$config_file", $option);
