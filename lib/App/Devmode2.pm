@@ -8,16 +8,10 @@ package App::Devmode2;
 
 use strict;
 use warnings;
-use Carp;
-use Scalar::Util;
-use List::Util;
-use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Getopt::Long;
-use Pod::Usage;
 use FindBin qw/$Bin/;
 use Path::Class;
-use YAML qw/LoadFile DumpFile/;
 use base qw/Exporter/;
 
 our $VERSION = 0.1;
@@ -31,41 +25,54 @@ our %p2u_extra;
 sub run {
     my ($self) = @_;
     Getopt::Long::Configure('bundling');
-    GetOptions(
+    my $success = GetOptions(
         \%option,
         'layout|l=s',
         'chdir|cd|c=s',
         'curdir|C',
         'save|s',
+        'auto|auto-complete',
+        'current=s',
         'verbose|v+',
         'man',
         'help',
         'VERSION!',
-    ) or Pod::Usage::pod2usage(
-        -verbose => 1,
-        -input   => $self,
-        %p2u_extra,
-    ) and return 1;
+    );
 
-    if ( $option{'VERSION'} ) {
-        print "$name Version = $VERSION\n";
-        return 0;
-    }
-    elsif ( $option{'man'} ) {
-        Pod::Usage::pod2usage(
-            -verbose => 2,
-            -input   => $self,
-            %p2u_extra,
-        );
-        return 2;
-    }
-    elsif ( $option{'help'} ) {
+    if ( !$success && !$option{auto} ) {
+        require Pod::Usage;
         Pod::Usage::pod2usage(
             -verbose => 1,
             -input   => __FILE__,
             %p2u_extra,
         );
         return 1;
+    }
+    elsif ( $option{'VERSION'} ) {
+        print "$name Version = $VERSION\n";
+        return 0;
+    }
+    elsif ( $option{'man'} ) {
+        require Pod::Usage;
+        Pod::Usage::pod2usage(
+            -verbose => 2,
+            -input   => __FILE__,
+            %p2u_extra,
+        );
+        return 2;
+    }
+    elsif ( $option{'help'} ) {
+        require Pod::Usage;
+        Pod::Usage::pod2usage(
+            -verbose => 1,
+            -input   => __FILE__,
+            %p2u_extra,
+        );
+        return 1;
+    }
+    elsif ( $option{auto} ) {
+        $self->_auto();
+        return 0;
     }
 
     # get the session name
@@ -77,12 +84,8 @@ sub run {
 
     if ( grep { $_ eq $session } @sessions ) {
         # connect to session
-        $self->_exec('tmux', 'attach', '-t', $session);
+        $self->_exec('tmux', '-u2', 'attach', '-t', $session);
         return 1;
-    }
-
-    if ($option{curdir}) {
-        $option{save} = 1;
     }
 
     # creating a new session should do some extra work
@@ -127,14 +130,15 @@ sub process_config {
     return if !-f $config_file && !$option->{save};
 
     if ( -f $config_file ) {
-        my ($config) = LoadFile("$config_file");
+        require YAML;
+        my ($config) = YAML::LoadFile("$config_file");
         for my $key (keys %{ $config }) {
             $option->{$key} = $config->{$key} if !exists $option->{$key};
         }
     }
 
     # save the config if requested to
-    if ($option->{save}) {
+    if ($option->{save} || $option{curdir}) {
         # create the path if missing
         $config_file->parent->mkpath();
 
@@ -147,7 +151,8 @@ sub process_config {
         }
 
         # save the config to YAML
-        DumpFile("$config_file", $option);
+        require YAML;
+        YAML::DumpFile("$config_file", $option);
     }
 
     return;
@@ -163,6 +168,30 @@ sub _exec {
     print join ' ', @_, "\n" if $option{verbose};
     exec @_ if !$option{test};
     return;
+}
+
+sub _auto {
+    my ($self) = @_;
+    my $current  = $ARGV[$option{current}];
+    my $previous = $ARGV[$option{current} - 1];
+
+    if ( defined $current && $current =~ /^-/ ) {
+        print join "\n", qw/-l --layout -s --save -c --cd -C --curdir/, '';
+    }
+    else {
+        my $dir = $previous =~ /^-l$|^--layout$/ ? $tmux_layout : $tmux_devmode;
+        my @found = grep {
+                !/^[.]/
+            }
+            map {
+                m{/([^/]+)$}; $1
+            }
+            grep {
+                !$current || /$current/
+            }
+            $dir->children;
+        print join "\n", @found, '';
+    }
 }
 
 1;
