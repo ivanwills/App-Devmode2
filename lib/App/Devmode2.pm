@@ -178,6 +178,9 @@ sub _auto {
     if ( defined $current && $current =~ /^-/ ) {
         print join "\n", qw/-l --layout -s --save -c --cd -C --curdir/, '';
     }
+    elsif ( $previous =~ /^-c$|^--(?:chdir|cd)$/ ) {
+        print join "\n", glob "$current*";
+    }
     else {
         my $dir = $previous =~ /^-l$|^--layout$/ ? $tmux_layout : $tmux_devmode;
         my @found = grep {
