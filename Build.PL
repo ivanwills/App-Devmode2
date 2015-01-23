@@ -10,6 +10,7 @@ my $builder = Module::Build->new(
     requires          => {
         'perl'        => 5.008,
         'Path::Class' => 0,
+        'YAML'        => 0,
     },
     build_requires => {
         'Test::More'       => 0,
