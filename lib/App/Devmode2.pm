@@ -92,6 +92,7 @@ sub run {
     $self->process_config($session, \%option);
 
     if ($option{chdir}) {
+        die "No directory '$option{chdir}'!\n" if !-d $option{chdir};
         chdir $option{chdir};
     }
 
