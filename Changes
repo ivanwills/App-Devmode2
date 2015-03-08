@@ -1,5 +1,13 @@
 Revision history for App-Devmode2
 
+0.2   2015-03-08
+        Updating for release of version 0.2
+        Added check that the directory exists before trying to change to it (Ivan Wills)
+        Added tags (Ivan Wills)
+        Added travis config (Ivan Wills)
+        Added missing dependency (Ivan Wills)
+        Updated changes (Ivan Wills)
+
 0.1     2015-01-24
         Updated License (Ivan Wills)
         Auto completion help (Ivan Wills)
