@@ -13,8 +13,8 @@ my $builder = Module::Build->new(
         'YAML'        => 0,
     },
     build_requires => {
-        'Test::More'       => 0,
-        'Test::NoWarnings' => 0,
+        'Test::More'     => 0,
+        'Test::Warnings' => 0,
     },
     recommends => {
         'Term::Title' => 0,

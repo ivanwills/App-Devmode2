@@ -2,8 +2,8 @@
 
 use strict;
 use warnings;
-use Test::More tests => 4 + 1;
-use Test::NoWarnings;
+use Test::More;
+use Test::Warnings;
 
 sub not_in_file_ok {
     my ($filename, %regex) = @_;
@@ -60,3 +60,4 @@ subtest 'Changes' => sub {
 
 module_boilerplate_ok('bin/devmode2');
 module_boilerplate_ok('lib/App/Devmode2.pm');
+done_testing();
