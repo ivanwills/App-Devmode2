@@ -183,7 +183,7 @@ sub _auto {
         print join "\n", glob "$current*";
     }
     else {
-        my $dir = $previous =~ /^-l$|^--layout$/ ? $tmux_layout : $tmux_devmode;
+        my $dir = $previous =~ /^-\w*l$|^--layout$/ ? $tmux_layout : $tmux_devmode;
         my @found = grep {
                 !/^[.]/
             }
