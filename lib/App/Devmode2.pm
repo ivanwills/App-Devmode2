@@ -191,7 +191,7 @@ sub _auto {
                 m{/([^/]+)$}; $1
             }
             grep {
-                !$current || /$current/
+                !$current || /$current/i
             }
             $dir->children;
         print join "\n", @found, '';
