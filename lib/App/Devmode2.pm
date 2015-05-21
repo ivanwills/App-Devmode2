@@ -184,14 +184,14 @@ sub _auto {
     }
     else {
         my $dir = $previous =~ /^-\w*l$|^--layout$/ ? $tmux_layout : $tmux_devmode;
-        my @found = grep {
-                !/^[.]/
+        my @found = sort {
+                lc $a cmp lc $b
+            }
+            grep {
+                !$current || /^$current/i
             }
             map {
                 m{/([^/]+)$}; $1
-            }
-            grep {
-                !$current || /$current/i
             }
             $dir->children;
         print join "\n", @found, '';
