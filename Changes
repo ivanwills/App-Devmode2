@@ -1,5 +1,14 @@
 Revision history for App-Devmode2
 
+0.3   2015-06-02
+        Updating for release of version 0.3
+        Cleaned up auto-completion helper (Ivan Wills)
+        Making shure that the regex is case insensitive (Ivan Wills)
+        Fixed not correctly finding bundled layouts (Ivan Wills)
+        Removed unneeded tag (Ivan Wills)
+        Added specific Test::More version for the features being used (Ivan Wills)
+        Added config for coveralls.io (Ivan Wills)
+
 0.2   2015-03-08
         Updating for release of version 0.2
         Added check that the directory exists before trying to change to it (Ivan Wills)
