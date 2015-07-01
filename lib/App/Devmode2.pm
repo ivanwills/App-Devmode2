@@ -36,7 +36,7 @@ sub run {
         'verbose|v+',
         'man',
         'help',
-        'VERSION!',
+        'version!',
     );
 
     if ( !$success && !$option{auto} ) {
@@ -224,6 +224,11 @@ This documentation refers to App::Devmode2 version 0.3
    -C --curdir  Saves the current director as the directory to change to
                 when next loaded. (implies --save)
 
+   -v --verbose Show more verbose output
+      --man     Show full help documentation
+      --help    Show this
+      --version Show the version of devmode2
+
 =head1 DESCRIPTION
 
 C<devmode2> is a helper script for L<tmux> to simplify the creation and
@@ -252,6 +257,13 @@ optionally saves that config.
 =head1 DIAGNOSTICS
 
 =head1 CONFIGURATION AND ENVIRONMENT
+
+Bash auto completion helper (add to your C<~/.bashrc> file:
+
+    _devmode2() {
+        COMPREPLY=($(devmode2 --auto --current "${COMP_CWORD}" -- ${COMP_WORDS[@]}))
+    }
+    complete -F _devmode2 devmode2
 
 =head1 DEPENDENCIES
 
