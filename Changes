@@ -1,5 +1,9 @@
 Revision history for App-Devmode2
 
+0.4   2015-07-02
+        Updating for release of version 0.4
+        Fixed up the documentation (Ivan Wills)
+
 0.3   2015-06-02
         Updating for release of version 0.3
         Cleaned up auto-completion helper (Ivan Wills)
