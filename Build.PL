@@ -9,7 +9,7 @@ my $builder = Module::Build->new(
     dist_version_from => 'lib/App/Devmode2.pm',
     requires          => {
         'perl'        => 5.008,
-        'Path::Class' => 0,
+        'Path::Tiny'  => 0,
         'YAML'        => 0,
     },
     build_requires => {

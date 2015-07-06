@@ -11,14 +11,14 @@ use warnings;
 use English qw/ -no_match_vars /;
 use Getopt::Long;
 use FindBin qw/$Bin/;
-use Path::Class;
+use Path::Tiny;
 use base qw/Exporter/;
 
 our $VERSION = 0.4;
 our ($name)  = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
-our $tmux_conf    = file "$ENV{HOME}", '.tmux.conf';
-our $tmux_layout  = dir "$ENV{HOME}", '.tmux', 'layout';
-our $tmux_devmode = dir "$ENV{HOME}", '.tmux', 'devmode2';
+our $tmux_conf    = path("$ENV{HOME}", '.tmux.conf');
+our $tmux_layout  = path("$ENV{HOME}", '.tmux', 'layout');
+our $tmux_devmode = path("$ENV{HOME}", '.tmux', 'devmode2');
 our %option;
 our %p2u_extra;
 
