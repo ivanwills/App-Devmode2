@@ -1,5 +1,10 @@
 Revision history for App-Devmode2
 
+0.5   2015-07-08
+        Updating for release of version 0.5
+        Converted to Path::Tiny (Ivan Wills)
+        Added Perl 5.22 to list of perl versions to build with (Ivan Wills)
+
 0.4   2015-07-02
         Updating for release of version 0.4
         Fixed up the documentation (Ivan Wills)
