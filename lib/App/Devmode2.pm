@@ -98,7 +98,7 @@ sub run {
 
     my @actions = ('-u2', 'new-session', '-s', $session, ';', 'source-file', $tmux_conf);
     if ($option{layout}) {
-        push @actions, ';', "source-file", $tmux_layout->file($option{layout});
+        push @actions, ';', "source-file", $tmux_layout->child($option{layout});
     }
 
     $self->_exec('tmux', @actions);
@@ -125,7 +125,7 @@ sub sessions {
 
 sub process_config {
     my ($self, $session, $option) = @_;
-    my $config_file = $tmux_devmode->file($session);
+    my $config_file = $tmux_devmode->child($session);
 
     # return if no config and not saving
     return if !-f $config_file && !$option->{save};
