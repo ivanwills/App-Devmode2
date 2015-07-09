@@ -14,7 +14,7 @@ use FindBin qw/$Bin/;
 use Path::Tiny;
 use base qw/Exporter/;
 
-our $VERSION = 0.5;
+our $VERSION = 0.6;
 our ($name)  = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
 our $tmux_conf    = path("$ENV{HOME}", '.tmux.conf');
 our $tmux_layout  = path("$ENV{HOME}", '.tmux', 'layout');
@@ -208,7 +208,7 @@ App::Devmode2 - A tmux session loading tool
 
 =head1 VERSION
 
-This documentation refers to App::Devmode2 version 0.5
+This documentation refers to App::Devmode2 version 0.6
 
 =head1 SYNOPSIS
 

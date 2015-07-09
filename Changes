@@ -1,5 +1,9 @@
 Revision history for App-Devmode2
 
+0.6   2015-07-09
+        Updating for release of version 0.6
+        Fixed using file rather than child after Path::Tiny migration (Ivan Wills)
+
 0.5   2015-07-08
         Updating for release of version 0.5
         Converted to Path::Tiny (Ivan Wills)
