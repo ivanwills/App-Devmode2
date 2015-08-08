@@ -1,5 +1,9 @@
 Revision history for App-Devmode2
 
+0.7   2015-08-08
+        Updating for release of version 0.7
+        Removed creation of makefile (Ivan Wills)
+
 0.6   2015-07-09
         Updating for release of version 0.6
         Fixed using file rather than child after Path::Tiny migration (Ivan Wills)
