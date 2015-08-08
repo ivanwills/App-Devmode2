@@ -20,7 +20,6 @@ my $builder = Module::Build->new(
         'Term::Title' => 0,
     },
     add_to_cleanup     => [ 'App-Devmode2-*' ],
-    create_makefile_pl => 'traditional',
     create_license     => 1,
     meta_merge => {
         resources => {
