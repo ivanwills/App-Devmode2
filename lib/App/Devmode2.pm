@@ -148,7 +148,7 @@ sub process_config {
 
         if ($option{curdir}) {
             delete $option->{curdir};
-            $option->{chdir} = dir('.')->absolute . '';
+            $option->{chdir} = path('.')->realpath . '';
         }
 
         # save the config to YAML
