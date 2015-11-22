@@ -1,5 +1,10 @@
 Revision history for App-Devmode2
 
+0.8   2015-11-22
+        Updating for release of version 0.8
+        Added missing test config and documentation (Ivan Wills)
+        Fixed missed rename from Path::Tiny move (Ivan Wills)
+
 0.7   2015-08-08
         Updating for release of version 0.7
         Removed creation of makefile (Ivan Wills)
