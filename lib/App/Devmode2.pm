@@ -33,6 +33,7 @@ sub run {
         'save|s',
         'auto|auto-complete',
         'current=s',
+        'test|t!',
         'verbose|v+',
         'man',
         'help',
@@ -224,6 +225,7 @@ This documentation refers to App::Devmode2 version 0.7
    -C --curdir  Saves the current director as the directory to change to
                 when next loaded. (implies --save)
 
+   -t --test    Don't run any external command (eg tmux)
    -v --verbose Show more verbose output
       --man     Show full help documentation
       --help    Show this
