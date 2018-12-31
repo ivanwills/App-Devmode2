@@ -1,0 +1,26 @@
+--- 
+# Create by App::VTide::Command::Init Tue Jan  1 05:51:56 2019 VERSION 0.1.6
+count: 4
+default: 
+  restart: 0
+  wait: 0
+editor: 
+  files: 
+    eg: 
+      - some-file.eg
+name: app-devmode2
+terminals: 
+  1a:
+    command: ./Build && ./Build testcover
+    restart: 1
+    wait: 0
+    watch:
+      - lib
+      - bin
+      - tests
+  2: []
+
+  3: []
+
+  4: []
+
